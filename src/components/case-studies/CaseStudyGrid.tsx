@@ -1,5 +1,6 @@
 
-import CaseStudyCard, { CaseStudy } from './CaseStudyCard';
+import CaseStudyCard from './CaseStudyCard';
+import type { CaseStudy } from './CaseStudyCard';
 
 export default function CaseStudyGrid({ items }: { items: CaseStudy[] }) {
   return (

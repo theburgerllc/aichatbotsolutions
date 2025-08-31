@@ -20,7 +20,7 @@ export default function TestimonialsCarousel() {
     return () => clearInterval(timer.current);
   }, []);
 
-  const item = DATA[index];
+  const item = DATA[index]!;
 
   return (
     <div className="card">

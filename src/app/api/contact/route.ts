@@ -21,7 +21,14 @@ export async function POST(req: Request) {
   const cookie = (req.headers.get('cookie')||'');
   const utmCookie = cookie.split(';').find(c=>c.trim().startsWith('utm_params='));
   let utmFromCookie: any = undefined;
-  try { if (utmCookie) utmFromCookie = JSON.parse(Buffer.from(utmCookie.split('=')[1], 'base64').toString('utf8')); } catch {}
+  try { 
+    if (utmCookie) {
+      const parts = utmCookie.split('=');
+      if (parts[1]) {
+        utmFromCookie = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf8'));
+      }
+    }
+  } catch {}
   const portalId = process.env.HUBSPOT_PORTAL_ID;
   const formId = process.env.HUBSPOT_FORM_ID;
   const hsToken = process.env.HUBSPOT_ACCESS_TOKEN;
@@ -61,7 +68,7 @@ export async function POST(req: Request) {
     } catch (e) { console.warn('HubSpot submission warning:', e); }
 
     await sgMail.send({
-      to: 'you@yourdomain.com',
+      to: process.env.LEADS_NOTIFICATION_EMAIL || 'you@yourdomain.com',
       from: process.env.SENDGRID_FROM_EMAIL!,
       replyTo: email,
       subject: `New lead from ${name}`,

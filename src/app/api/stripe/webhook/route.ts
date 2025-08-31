@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
           const unitAmount = price?.unit_amount as number | undefined;
           const interval = price?.recurring?.interval as any;
           const mrr = computeMRR(unitAmount, interval);
-          const periodEnd = toMs(sub?.current_period_end);
+          const periodEnd = toMs((sub as any)?.current_period_end);
           const status = sub?.status as string | undefined;
           if (email) {
             await hsUpsert(email, {
